@@ -31,5 +31,4 @@ a:hover{color:black;underline:none;}
 .bgcolorefefef{ background-color:#EFEFEF !important;}
 
 .more{width:153px; height:28px; border:1px #717679 solid !important;padding:10px 0 0 0 !important; margin:0 auto;display:block; color:black; underline:none; text-align:center;}
-
-
+.ml-15{ margin-left:-15px !important;}
