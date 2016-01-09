@@ -1,58 +1,31 @@
 <!DOCTYPE html>
 <html lang="en-gb" dir="ltr">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>{dede:global.cfg_webname/}</title>
-        <link rel="shortcut icon" href="docs/images/favicon.ico" type="image/x-icon">
-        <link rel="apple-touch-icon-precomposed" href="./uikit/docs/images/apple-touch-icon.png">
-		<link id="data-uikit-theme" rel="stylesheet" href="./css/style.css">
-		<link id="data-uikit-theme" rel="stylesheet" href="./css/index.css">
-		
-        <link id="data-uikit-theme" rel="stylesheet" href="./uikit/docs/css/uikit.docs.min.css">
-        <link rel="stylesheet" href="./uikit/docs/css/docs.css">
-        <link rel="stylesheet" href="./uikit/vendor/highlight/highlight.css">
-        <script src="./uikit/vendor/jquery.js"></script>
-        <script src="./uikit/docs/js/uikit.min.js"></script>
-        <script src="./uikit/vendor/highlight/highlight.js"></script>
-        <script src="./uikit/docs/js/docs.js"></script>
-		<script src="./uikit/src/js/components/slideshow.js"></script>
-        <script src="./uikit/src/js/components/slideshow-fx.js"></script>
+        <link rel="shortcut icon" href="docs/images/favicon.ico" type="image/x-icon"/>
+        <link rel="apple-touch-icon-precomposed" href="/uikit/docs/images/apple-touch-icon.png"/>
+		<link id="data-uikit-theme" rel="stylesheet" href="/css/style.css"/>
+		<link id="data-uikit-theme" rel="stylesheet" href="/css/index.css"/>
+        <link id="data-uikit-theme" rel="stylesheet" href="/uikit/docs/css/uikit.docs.min.css"/>
+        <link rel="stylesheet" href="/uikit/docs/css/docs.css"/>
+        <link rel="stylesheet" href="/uikit/vendor/highlight/highlight.css"/>
+        <script src="/uikit/vendor/jquery.js"></script>
+        <script src="/uikit/docs/js/uikit.min.js"></script>
+        <script src="/uikit/vendor/highlight/highlight.js"></script>
+        <script src="/uikit/docs/js/docs.js"></script>
+		<script src="/uikit/src/js/components/slideshow.js"></script>
+        <script src="/uikit/src/js/components/slideshow-fx.js"></script>
     </head>
     <body class="tm-background">
-        <nav class="tm-navbar uk-navbar uk-navbar-attached">
-            <div class="uk-container uk-container-center">
-                <a class="uk-navbar-brand uk-hidden-small" href="index.html">
-					<img class="uk-margin uk-margin-remove" src="./images/logo.png" title="{dede:global.cfg_webname/}" alt="{dede:global.cfg_webname/}"/>
-				</a>
-                <ul class="uk-navbar-nav uk-hidden-small">
-                    <li><a href="docs/documentation_get-started.html">首页</a></li>
-                    <li><a href="docs/core.html">案例</a></li>
-                    <li><a href="docs/components.html">了解更多</a></li>
-                    <li><a href="docs/customizer.html">联系方式</a></li>
-                </ul>
-                <a href="#tm-offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
-                <div class="uk-navbar-brand uk-navbar-center uk-visible-small">
-					<img src="./images/logo.png" width="117" title="{dede:global.cfg_webname/}" alt="{dede:global.cfg_webname/}"/>
-				</div>
-            </div>
-        </nav>
-		<div id="tm-offcanvas" class="uk-offcanvas">
-            <div class="uk-offcanvas-bar">
-                <ul class="uk-nav uk-nav-offcanvas uk-nav-parent-icon" data-uk-nav="{ multiple: true }">
-                    <li><a href="docs/documentation_get-started.html">首页</a></li>
-                    <li><a href="docs/core.html">案例</a></li>
-                    <li><a href="docs/components.html">了解更多</a></li>
-                    <li><a href="docs/customizer.html">联系方式</a></li>
-                </ul>
-            </div>
-        </div>
+        {dede:include filename="res_nav.html"/}
 		<div class="tm-middle" style="padding-top:0px;">
 			<div class="uk-slidenav-position" data-uk-slideshow>
 				<ul class="uk-slideshow">
-                    <li><img src="./uikit/docs/images/placeholder_800x400_1.jpg" width="1438" height="499" alt=""></li>
-                    <li><img src="./uikit/docs/images/placeholder_800x400_2.jpg" width="1438" height="499" alt=""></li>
-                    <li><img src="./uikit/docs/images/placeholder_800x400_3.jpg" width="1438" height="499" alt=""></li>
+                    <li><img src="/images/placeholder_800x400_1.jpg" width="1438" height="499" alt=""></li>
+                    <li><img src="/images/placeholder_800x400_2.jpg" width="1438" height="499" alt=""></li>
+                    <li><img src="/images/placeholder_800x400_3.jpg" width="1438" height="499" alt=""></li>
                 </ul>
                 <a href="#" class="uk-slidenav uk-slidenav-contrast uk-slidenav-previous" data-uk-slideshow-item="previous" style="color: rgba(255,255,255,0.4)"></a>
                 <a href="#" class="uk-slidenav uk-slidenav-contrast uk-slidenav-next" data-uk-slideshow-item="next" style="color: rgba(255,255,255,0.4)"></a>
@@ -63,61 +36,46 @@
                 </ul>
             </div>
 			
-			<div class=" p030 uk-grid center" data-uk-grid-margin>
+			<div class=" mxwidth uk-grid center" data-uk-grid-margin>
 				<div class="uk-width-1-1 mt60">
                     <h1 class="uk-article-lead font24px">专业领域</h1>
 					<p class="uk-article-lead">WHAT WE DO</p>
                 </div>
 				
-				<div class="uk-width-medium-1-4 textAlignLeft ">
+				<div class="uk-width-large-1-4 uk-width-small-1-1 textAlignLeft ">
                     <div class="uk-panel border pb18 pt18 center">
 						<h1 class="uk-panel-title">专业领域</h1>
 						<h1 class="tm-article-subtitle noneborder p0">专业领域</h1>
                         <p class="mt10">为产品添加新的竞争力</p>
-						<img class="tm-image-pull" src="./images/case_item.jpg" alt="Components">
+						<img class="tm-image-pull" src="/images/case_item.jpg" alt="Components">
                     </div>
                 </div>
-				<div class="uk-width-medium-1-4 textAlignLeft ">
+				<div class="uk-width-large-1-4 uk-width-small-1-1 textAlignLeft ">
                     <div class="uk-panel border pb18 pt18 center">
 						<h1 class="uk-panel-title">专业领域</h1>
 						<h1 class="tm-article-subtitle noneborder p0">专业领域</h1>
                         <p class="mt10">2014.12.22</p>
-						<img class="tm-image-pull" src="./images/case_item.jpg" alt="Components">
+						<img class="tm-image-pull" src="/images/case_item.jpg" alt="Components">
                     </div>
                 </div>
-				<div class="uk-width-medium-1-4 textAlignLeft ">
+				<div class="uk-width-large-1-4 uk-width-small-1-1 textAlignLeft ">
                     <div class="uk-panel border pb18 pt18 center">
 						<h1 class="uk-panel-title">专业领域</h1>
 						<h1 class="tm-article-subtitle noneborder p0">专业领域</h1>
                         <p class="mt10">2014.12.22</p>
-						<img class="tm-image-pull" src="./images/case_item.jpg" alt="Components">
+						<img class="tm-image-pull" src="/images/case_item.jpg" alt="Components">
                     </div>
                 </div>
-				<div class="uk-width-medium-1-4 textAlignLeft ">
+				<div class="uk-width-large-1-4 uk-width-small-1-1 textAlignLeft ">
                     <div class="uk-panel border pb18 pt18 center">
 						<h1 class="uk-panel-title">专业领域</h1>
 						<h1 class="tm-article-subtitle noneborder p0">专业领域</h1>
                         <p class="mt10">2014.12.22</p>
-						<img class="tm-image-pull" src="./images/case_item.jpg" alt="Components">
+						<img class="tm-image-pull" src="/images/case_item.jpg" alt="Components">
                     </div>
                 </div>
             </div>
-			
-			<div>
-				<div class="uk-width-1-1 uk-width-large-1-2 mt60 m0a uk-grid">
-                    <div class="uk-width-1-4">
-						<img src="./images/qrcode.png"/>
-					</div>
-					<div class="uk-width-3-4">
-						<h1 class="uk-article-lead font24px">专业领域</h1>
-						<p class="uk-article-lead mb0 mt40">致电米立负责人</p>
-						<p class="mb0 mt0">米立人力资源专线</p>
-						<p class="mb0 mt0">米立人力资源专线</p>
-					</div>
-                </div>
-            </div>
-			
-			
+			{dede:include filename="res_contactinfo.html"/}
 		</div>
 			<div class=" p030 uk-grid center" data-uk-grid-margin>
 				<div class="uk-width-1-1 uk-width-large-1-1 mt60">
@@ -125,25 +83,25 @@
 					<p class="uk-article-lead">WHAT WE DO</p>
                 </div>
 				
-					<div class="uk-width-medium-1-3 textAlignLeft ">
+					<div class="uk-width-large-1-3 uk-width-small-1-1 textAlignLeft ">
                         <div class="uk-panel border pb18">
-                            <img class="tm-image-pull" src="./images/case_item.jpg" alt="Components">
+                            <img class="tm-image-pull" src="/images/case_item.jpg" alt="Components">
                             <p class="mt27 pl25">2014.12.22</p>
 							<h2 class="tm-article-subtitle pl25">十度良品</h2>
                         </div>
                     </div>
 					
-					<div class="uk-width-medium-1-3 textAlignLeft">
+					<div class="uk-width-large-1-3 uk-width-small-1-1 textAlignLeft">
                         <div class="uk-panel border pb18">
-                            <img class="tm-image-pull" src="./images/case_item.jpg" alt="Components">
+                            <img class="tm-image-pull" src="/images/case_item.jpg" alt="Components">
                             <p class="mt27 pl25">2014.12.22</p>
 							<h2 class="tm-article-subtitle pl25">十度良品</h2>
                         </div>
                     </div>
 					
-					<div class="uk-width-medium-1-3 textAlignLeft">
+					<div class="uk-width-large-1-3 uk-width-small-1-1 textAlignLeft">
 						<div class="uk-panel border pb18">
-							<img class="tm-image-pull" src="./images/case_item.jpg" alt="Components">
+							<img class="tm-image-pull" src="/images/case_item.jpg" alt="Components">
 							<p class="mt27 pl25">2014.12.22</p>
 							<h2 class="tm-article-subtitle pl25">十度良品</h2>
 						</div>
@@ -157,15 +115,15 @@
 				<div class="uk-container uk-container-center uk-text-center">
 					<div class="uk-panel">
 						<h1 class="uk-article-lead">米立旗下服务品牌</h1>
-						<div style="width:50%; margin:0 auto" class="uk-grid">
+						<div style="width:50%; margin:0 auto;text-align:center" class="uk-grid">
 							<div class="uk-width-medium-1-3 textAlignLeft ml-15">
-								<img class="tm-image-pull" src="./images/index3.png" alt="Components">
+								<img class="tm-image-pull" src="/images/index3.png" alt="Components">
 							</div>
 							<div class="uk-width-medium-1-3 textAlignLeft">
-									<img class="tm-image-pull" src="./images/index2.png" alt="Components">
+									<img class="tm-image-pull" src="/images/index2.png" alt="Components">
 							</div>
 							<div class="uk-width-medium-1-3 textAlignLeft">
-								<img class="tm-image-pull" src="./images/index.png" alt="Components">
+								<img class="tm-image-pull" src="/images/index.png" alt="Components">
 							</div>
 						</div>
 						<p>Copyright 2011-2014 miliup.com All rights Reserved 米立设计版权所有</p>
