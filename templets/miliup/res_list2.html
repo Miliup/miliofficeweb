@@ -31,19 +31,47 @@
                     <h1 class="uk-article-lead">专业领域</h1>
 					<p class="uk-article-lead">WHAT WE DO</p>
                 </div>
-				{dede:list pagesize='3'}
+				{dede:arclist typeid='2' row=3}
 				<div class="uk-width-medium-1-3 textAlignLeft ">
                     <div class="uk-panel border pb18">
-                        <a href="[field:arcurl/]"><img class="tm-image-pull" src="{@me['litpic']}" alt="Components"/></a>
+                        <a href="[field:arcurl/]"><img class="tm-image-pull" src="{@me['litpic']}" alt="[field:title/]"/></a>
                         <p class="mt27 pl25">[field:pubdate function="MyDate('Y.m.d',@me)"/]</p>
 						<h2 class="tm-article-subtitle pl25">[field:title/]</h2>
                     </div>
                 </div>
-				{/dede:list}
+				{/dede:arclist}
             </div>
-			<ul class="uk-pagination">
-				{dede:pagelist listitem="end,pre,next,pageno" listsize="5"/}
-			</ul>
+			
+			<div class="uk-width-1-1 uk-width-large-1-1 mt60">
+                    <h1 class="uk-article-lead">专业领域</h1>
+					<p class="uk-article-lead">WHAT WE DO</p>
+                </div>
+				{dede:arclist typeid='3' row=3}
+				<div class="uk-width-medium-1-3 textAlignLeft ">
+                    <div class="uk-panel border pb18">
+                        <a href="[field:arcurl/]"><img class="tm-image-pull" src="{@me['litpic']}" alt="[field:title/]"/></a>
+                        <p class="mt27 pl25">[field:pubdate function="MyDate('Y.m.d',@me)"/]</p>
+						<h2 class="tm-article-subtitle pl25">[field:title/]</h2>
+                    </div>
+                </div>
+				{/dede:arclist}
+            </div>
+
+
+			<div class="uk-width-1-1 uk-width-large-1-1 mt60">
+                    <h1 class="uk-article-lead">专业领域</h1>
+					<p class="uk-article-lead">WHAT WE DO</p>
+                </div>
+				{dede:arclist typeid='4' row=3}
+				<div class="uk-width-medium-1-3 textAlignLeft ">
+                    <div class="uk-panel border pb18">
+                        <a href="[field:arcurl/]"><img class="tm-image-pull" src="{@me['litpic']}" alt="[field:title/]"/></a>
+                        <p class="mt27 pl25">[field:pubdate function="MyDate('Y.m.d',@me)"/]</p>
+						<h2 class="tm-article-subtitle pl25">[field:title/]</h2>
+                    </div>
+                </div>
+				{/dede:arclist}
+            </div>
 		</div>
         <div class="tm-footer">
 			{dede:include filename="res_contactinfo.html"/}

@@ -5,7 +5,7 @@ a:hover{color:black;underline:none;}
 .banner{ padding-top:0px;}
 
 .noborder{ border:none;}
-.center{text-align:center;}
+.center{text-align:center !important;}
 .textAlignLeft{text-align:left;}
 .border{ border:1px #dadada solid;}
 .noneborder{border:0px !important;}
