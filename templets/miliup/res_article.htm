@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+        <meta name="description" content="{dede:global.cfg_description/}" />
+<meta name="keywords" content="{dede:global.cfg_keywords/}" />
         <link rel="shortcut icon" href="docs/images/favicon.ico" type="image/x-icon">
         <link rel="apple-touch-icon-precomposed" href="/uikit/docs/images/apple-touch-icon.png">
 		<link id="data-uikit-theme" rel="stylesheet" href="/css/style.css">
@@ -14,24 +16,20 @@
         <script src="/uikit/docs/js/uikit.min.js"></script>
         <script src="/uikit/vendor/highlight/highlight.js"></script>
         <script src="/uikit/docs/js/docs.js"></script>
+		<script src="/uikit/src/js/components/slideshow.js"></script>
+        <script src="/uikit/src/js/components/slideshow-fx.js"></script>
     </head>
     <body class="tm-background">
         {dede:include filename="res_nav.html"/}
 		<div class="tm-middle" style="padding-top:0px;">
-			<div class="banner">
-					<img src="/images/more_02.gif"/>
-			</div>
-			<div class="uk-grid tm-grid-truncate" data-uk-grid-margin>
-				<div class="uk-width-medium-1-2 ">
-					<div class="uk-panel uk-panel-box uk-panel-box-secondary center" style="border:none;">
-						<a href="/sprocess.html"><img src="/images/service-process.gif" alt=""/></a>
-                        
-                    </div>
-                </div>
-                <div class="uk-width-medium-1-2">
-                    <div class="uk-panel uk-panel-box uk-panel-box-secondary center" style="border:none;">
-                        <a href="/about.html"><img src="/images/breaking-news.gif" alt=""/></a>
-                    </div>
+			<div class="mxwidth800 uk-grid uk-article" data-uk-grid-margin>
+				<div class="uk-width-1-1 mt60 textAlignLeft">
+                    <h1 class="uk-panel-title">{dede:field.pubdate function="MyDate('Y.m.d',@me)"/}</h1>
+					<h2><a class="uk-link-reset">{dede:field.title/}</a></h2>
+					<p>{dede:field.longdescription/}</p>
+					<div class="uk-width-1-1 mt60 bgcolorefefef">
+						{dede:field.body/}
+					</div>
                 </div>
             </div>
 		</div>

@@ -1,6 +1,7 @@
 a:hover{color:black;underline:none;}
 .tm-middle{margin:0 auto;text-align:center;}
 .font24px{ font-size:24px !important;}
+.fw400{font-weight:400;}
 
 .banner{ padding-top:0px;}
 
@@ -10,6 +11,7 @@ a:hover{color:black;underline:none;}
 .border{ border:1px #dadada solid;}
 .noneborder{border:0px !important;}
 .mxwidth{max-width:1200px; margin:0 auto !important;}
+.mxwidth800{max-width:800px; margin:0 auto !important;}
 
 .p0{padding:0px !important; margin:0 !important;}
 .p030{ padding:0 150px !important;}
@@ -29,6 +31,8 @@ a:hover{color:black;underline:none;}
 .mt27{margin-top:27px !important;}
 .mt40{margin-top:40px !important;}
 .mb60{margin-bottom:60px !important;}
+.mb80{margin-bottom:80px !important;}
+.mt90{margin-top:90px !important;}
 .bgcolorefefef{ background-color:#EFEFEF !important;}
 
 .more{width:153px; height:28px; border:1px #717679 solid !important;padding:10px 0 0 0 !important; margin:0 auto;display:block; color:black; underline:none; text-align:center;}

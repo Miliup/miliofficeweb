@@ -4,8 +4,6 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
-        <meta name="description" content="{dede:global.cfg_description/}" />
-<meta name="keywords" content="{dede:global.cfg_keywords/}" />
         <link rel="shortcut icon" href="docs/images/favicon.ico" type="image/x-icon"/>
         <link rel="apple-touch-icon-precomposed" href="/uikit/docs/images/apple-touch-icon.png"/>
 		<link id="data-uikit-theme" rel="stylesheet" href="/css/style.css"/>
@@ -30,22 +28,74 @@
 			</div>
 			<div class=" mxwidth uk-grid center" data-uk-grid-margin>
 				<div class="uk-width-1-1 uk-width-large-1-1 mt60">
-                    <h1 class="uk-article-lead">专业领域</h1>
+                    <h1 class="uk-article-lead"> 设计案例</h1>
 					<p class="uk-article-lead">WHAT WE DO</p>
                 </div>
-				{dede:list pagesize='9'}
+                    {dede:arclist typeid='2' row='3'}
+						<div class="uk-panel uk-width-medium-1-3 textAlignLeft ">
+							<div class="uk-panel border pb18">
+								<a href="[field:arcurl/]"><img class="tm-image-pull" src="[field:litpic/]" alt="[field:title/]"></a>
+								<p class="mt27 pl25">[field:pubdate function="MyDate('Y.m.d',@me)"/]</p>
+								<h2 class="tm-article-subtitle pl25">[field:title/]</h2>
+							</div>
+						</div>
+					{/dede:arclist}
+				
+            </div>
+
+
+
+              <div class=" mxwidth uk-grid center" data-uk-grid-margin>
+				<div class="uk-width-1-1 uk-width-large-1-1 mt60">
+                    <h1 class="uk-article-lead">摄影案例</h1>
+					<p class="uk-article-lead">WHAT WE DO</p>
+                </div>
+                 
+                    {dede:arclist typeid='3' row='3'}
+						<div class="uk-panel uk-width-medium-1-3 textAlignLeft ">
+							<div class="uk-panel border pb18">
+								<a href="[field:arcurl/]"><img class="tm-image-pull" src="[field:litpic/]" alt="[field:title/]"></a>
+								<p class="mt27 pl25">[field:pubdate function="MyDate('Y.m.d',@me)"/]</p>
+								<h2 class="tm-article-subtitle pl25">[field:title/]</h2>
+							</div>
+						</div>
+					{/dede:arclist}
+            </div>
+
+
+
+
+
+
+
+
+
+
+              <div class=" mxwidth uk-grid center" data-uk-grid-margin>
+				<div class="uk-width-1-1 uk-width-large-1-1 mt60">
+                    <h1 class="uk-article-lead">活动策划案例</h1>
+					<p class="uk-article-lead">WHAT WE DO</p>
+                </div>
+                                {dede:arclist typeid='4' row='3'}
 				<div class="uk-panel uk-width-medium-1-3 textAlignLeft ">
                     <div class="uk-panel border pb18">
-                        <a href="[field:arcurl/]"><img class="tm-image-pull" src="[field:litpic/]" alt="Components"/></a>
+                        <a href="[field:arcurl/]"><img class="tm-image-pull" src="[field:litpic/]" alt="[field:title/]"></a>
                         <p class="mt27 pl25">[field:pubdate function="MyDate('Y.m.d',@me)"/]</p>
 						<h2 class="tm-article-subtitle pl25">[field:title/]</h2>
                     </div>
                 </div>
-				{/dede:list}
+			        {/dede:arclist}
             </div>
-			<ul class="uk-pagination">
-				{dede:pagelist listitem="end,pre,next,pageno" listsize="5"/}
-			</ul>
+
+
+
+
+
+
+
+
+
+               
 		</div>
         <div class="tm-footer">
 			{dede:include filename="res_contactinfo.html"/}

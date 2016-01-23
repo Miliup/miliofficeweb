@@ -62,14 +62,14 @@ html {
 
     .tm-middle,
     .tm-section,
-    .tm-footer { padding: 90px 0; }
+    .tm-footer {  }
 }
 
 /* Large screen and bigger */
 @media (min-width: 1220px) {
     .tm-middle,
     .tm-section,
-    .tm-footer { padding: 120px 0; }
+    .tm-footer { }
 }
 
 
@@ -262,7 +262,7 @@ html {
  */
 
 .tm-navbar {
-    padding: 15px 0;
+    padding: 25px 0;
     border: none;
     background: #ffffff;
 }
