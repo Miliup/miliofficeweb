@@ -24,8 +24,8 @@
 		<div class="tm-middle" style="padding-top:0px;">
 			<div class="mxwidth800 uk-grid uk-article" data-uk-grid-margin>
 				<div class="uk-width-1-1 mt60 textAlignLeft">
-                    <h1 class="uk-panel-title">{dede:field.pubdate function="MyDate('Y.m.d',@me)"/}</h1>
-					<h2><a class="uk-link-reset">{dede:field.title/}</a></h2>
+                    <h1 class="uk-panel-title font16px boldfont">{dede:field.pubdate function="MyDate('Y.m.d',@me)"/}</h1>
+					<h2><a class="uk-link-reset font24px">{dede:field.title/}</a></h2>
 					<p>{dede:field.longdescription/}</p>
 					<div class="uk-width-1-1 mt60 bgcolorefefef">
 						{dede:field.body/}
@@ -37,7 +37,7 @@
 			{dede:include filename="res_contactinfo.html"/}
             <div class="uk-container uk-container-center uk-text-center mt60">
                 <div class="uk-panel">
-                    <p>Copyright 2011-2014 miliup.com All rights Reserved 米立设计版权所有</p>
+                    <p>{dede:global.cfg_powerby/}</p>
                 </div>
             </div>
         </div>

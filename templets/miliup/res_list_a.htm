@@ -4,6 +4,8 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+		<meta name="description" content="{dede:field.seotitle /}" />
+		<meta name="keywords" content="{dede:global.cfg_keywords/}" />
         <link rel="shortcut icon" href="docs/images/favicon.ico" type="image/x-icon"/>
         <link rel="apple-touch-icon-precomposed" href="/uikit/docs/images/apple-touch-icon.png"/>
 		<link id="data-uikit-theme" rel="stylesheet" href="/css/style.css"/>
@@ -34,9 +36,9 @@
                     {dede:arclist typeid='2' row='3'}
 						<div class="uk-panel uk-width-medium-1-3 textAlignLeft ">
 							<div class="uk-panel border pb18">
-								<a href="[field:arcurl/]"><img class="tm-image-pull" src="[field:litpic/]" alt="[field:title/]"></a>
+								<a href="[field:arcurl/]"><img class="tm-image-pull" src="[field:litpic/]" alt="[field:title/]" width="380px" height="260px"  style="height:260px"/></a>
 								<p class="mt27 pl25">[field:pubdate function="MyDate('Y.m.d',@me)"/]</p>
-								<h2 class="tm-article-subtitle pl25">[field:title/]</h2>
+								<h2 class="tm-article-subtitle pl25 font18px mt12">[field:title/]</h2>
 							</div>
 						</div>
 					{/dede:arclist}
@@ -54,9 +56,9 @@
                     {dede:arclist typeid='3' row='3'}
 						<div class="uk-panel uk-width-medium-1-3 textAlignLeft ">
 							<div class="uk-panel border pb18">
-								<a href="[field:arcurl/]"><img class="tm-image-pull" src="[field:litpic/]" alt="[field:title/]"></a>
+								<a href="[field:arcurl/]"><img class="tm-image-pull" src="[field:litpic/]" alt="[field:title/]" width="380px" height="260px"/></a>
 								<p class="mt27 pl25">[field:pubdate function="MyDate('Y.m.d',@me)"/]</p>
-								<h2 class="tm-article-subtitle pl25">[field:title/]</h2>
+								<h2 class="tm-article-subtitle pl25 font18px mt12">[field:title/]</h2>
 							</div>
 						</div>
 					{/dede:arclist}
@@ -79,9 +81,9 @@
                                 {dede:arclist typeid='4' row='3'}
 				<div class="uk-panel uk-width-medium-1-3 textAlignLeft ">
                     <div class="uk-panel border pb18">
-                        <a href="[field:arcurl/]"><img class="tm-image-pull" src="[field:litpic/]" alt="[field:title/]"></a>
+                        <a href="[field:arcurl/]"><img class="tm-image-pull" src="[field:litpic/]" alt="[field:title/]" width="380px" height="260px"/></a>
                         <p class="mt27 pl25">[field:pubdate function="MyDate('Y.m.d',@me)"/]</p>
-						<h2 class="tm-article-subtitle pl25">[field:title/]</h2>
+						<h2 class="tm-article-subtitle pl25 font18px mt12">[field:title/]</h2>
                     </div>
                 </div>
 			        {/dede:arclist}
@@ -101,7 +103,7 @@
 			{dede:include filename="res_contactinfo.html"/}
             <div class="uk-container uk-container-center uk-text-center mt60">
                 <div class="uk-panel">
-                    <p>Copyright 2011-2014 miliup.com All rights Reserved 米立设计版权所有</p>
+                    <p>{dede:global.cfg_powerby/}</p>
                 </div>
             </div>
         </div>

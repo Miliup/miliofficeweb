@@ -1,7 +1,24 @@
 a:hover{color:black;underline:none;}
 .tm-middle{margin:0 auto;text-align:center;}
+
+.font13px{ font-size:12px !important;}
+.font16px{ font-size:16px !important;}
+.font16pt{ font-size:16pt !important;}
+.font18px{ font-size:18px !important;}
+.font20px{ font-size:20px !important;}
+.font22px{ font-size:22px !important;}
 .font24px{ font-size:24px !important;}
-.fw400{font-weight:400;}
+.font26px{ font-size:26px !important;}
+.font28px{ font-size:28px !important;}
+.font30px{ font-size:30px !important;}
+.fw400{font-weight:400 !important;}
+.fw500{font-weight:400 !important;}
+.fw600{font-weight:600 !important;}
+.boldfont{ font-weight:bold !important;}
+
+.breakingnewsinfop{ margin:0 auto; max-width:815px; font-size:14px;}
+
+.lineh125em{ line-height:1.25em;}
 
 .banner{ padding-top:0px;}
 
@@ -11,29 +28,45 @@ a:hover{color:black;underline:none;}
 .border{ border:1px #dadada solid;}
 .noneborder{border:0px !important;}
 .mxwidth{max-width:1200px; margin:0 auto !important;}
+.mxwidth382{max-width:380 !important;}
 .mxwidth800{max-width:800px; margin:0 auto !important;}
 
+.pt8{padding-top:8px}
 .p0{padding:0px !important; margin:0 !important;}
 .p030{ padding:0 150px !important;}
 .pt40{ padding-top:40px !important;}
+.pt10{ padding-top:10px !important;}
+
+.p_0_18{ padding:0 18px !important;}
 
 .pl25{padding-left:25px !important;}
 .pl75{padding-left:75px !important;}
 .p170{ padding:0 170px !important;}
+.pl30{padding-left:30px;}
+
 .pb18{padding-bottom:18px !important;}
 .pt18{padding-top:18px !important;}
+.pt10{padding-top:10px !important;}
 .plnone{padding-left:0px !important;}
 .mt0{margin-top:0px !important;}
 .m0a{margin:0 auto !important;}
 .mt10{margin-top:5px !important;}
+.pl14{padding-left:15px !important;}
 .mb0{margin-bottom:0px !important;}
 .mt60{margin-top:60px !important;}
 .mt27{margin-top:27px !important;}
 .mt40{margin-top:40px !important;}
+
+.mt60{margin-top:60px !important;}
 .mb60{margin-bottom:60px !important;}
+.mb70{margin-bottom:70px !important;}
 .mb80{margin-bottom:80px !important;}
+
+.mt12{margin-top:12px !important;}
+.mt70{margin-top:70px !important;}
 .mt90{margin-top:90px !important;}
 .bgcolorefefef{ background-color:#EFEFEF !important;}
+.bgcolorwhite{ background-color:white !important;}
 
 .more{width:153px; height:28px; border:1px #717679 solid !important;padding:10px 0 0 0 !important; margin:0 auto;display:block; color:black; underline:none; text-align:center;}
 .ml-15{ margin-left:-15px !important;}

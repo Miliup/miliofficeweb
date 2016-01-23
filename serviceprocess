@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en-gb" dir="ltr">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>米立设计</title>
-        <link rel="shortcut icon" href="docs/images/favicon.ico" type="image/x-icon">
-        <link rel="apple-touch-icon-precomposed" href="/uikit/docs/images/apple-touch-icon.png">
-		<link id="data-uikit-theme" rel="stylesheet" href="/css/style.css">
-        <link id="data-uikit-theme" rel="stylesheet" href="/uikit/docs/css/uikit.docs.min.css">
-        <link rel="stylesheet" href="/uikit/docs/css/docs.css">
-        <link rel="stylesheet" href="/uikit/vendor/highlight/highlight.css">
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>了解更多 > 服务流程_米立设计</title>
+        <link rel="shortcut icon" href="docs/images/favicon.ico" type="image/x-icon"/>
+        <link rel="apple-touch-icon-precomposed" href="/uikit/docs/images/apple-touch-icon.png"/>
+		<link id="data-uikit-theme" rel="stylesheet" href="/css/style.css"/>
+        <link id="data-uikit-theme" rel="stylesheet" href="/uikit/docs/css/uikit.docs.min.css"/>
+        <link rel="stylesheet" href="/uikit/docs/css/docs.css"/>
+        <link rel="stylesheet" href="/uikit/vendor/highlight/highlight.css"/>
         <script src="/uikit/vendor/jquery.js"></script>
         <script src="/uikit/docs/js/uikit.min.js"></script>
         <script src="/uikit/vendor/highlight/highlight.js"></script>
@@ -48,8 +48,7 @@
 			<div class="banner">
 					<img src="/images/service.gif"/>
 			</div>
-			
-			<div class=" p030 uk-grid " data-uk-grid-margin>
+			<div class=" mxwidth uk-grid " data-uk-grid-margin>
 				<div class="uk-width-medium-1-2">
                     <div class="uk-panel uk-panel-hover" href="">
                         <h3 class="uk-panel-title pt40">01&nbsp;<h class="uk-panel-title2">联系我们</h></h3>
