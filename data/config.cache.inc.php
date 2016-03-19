@@ -155,5 +155,7 @@ $cfg_cross_sectypeid = 'N';
 $cfg_digg_update = 0;
 $cfg_feedback_guest = 'N';
 $cfg_address = '广东省广州市天河区五山科华路251号乐天创意园A2-7018室';
-$cfg_hiremail = 'zengyu@miliup.com';
+$cfg_hiremail = '米立人力资源：020 8526 1895，微信公众号搜索“米立”';
+$cfg_hiretel = '致电米立负责人专线：156 2618 3015，随时骚扰他，急求！';
+$cfg_contactqrcode = '/images/qrcode.png';
 ?>

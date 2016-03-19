@@ -51,7 +51,6 @@ $atts['listsize'] = '2';
 <p><img src='<?php echo $cfg_templeturl; ?>/wap/hr.gif' alt='sp line' /></p>
 
 <p>
-<a href='http://www.dedecms.com/wap.php'>Power by DedeCms</a> 
 Now Time: <?php echo $curtime; ?>
 </p>
 </card>
