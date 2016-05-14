@@ -61,7 +61,7 @@ class RssView
         $this->remoteDir = '';
         foreach($this->TypeFields as $k=>$v)
         {
-            $this->TypeFields[$k] = dede_htmlspecialchars($v);
+            $this->TypeFields[$k] = htmlspecialchars($v);
         }
         $this->ParseTemplet();
     }
@@ -201,7 +201,7 @@ class RssView
             }
             foreach($row as $k=>$v)
             {
-                $row[$k] = dede_htmlspecialchars($v);
+                $row[$k] = htmlspecialchars($v);
             }
             if(is_array($dtp2->CTags))
             {

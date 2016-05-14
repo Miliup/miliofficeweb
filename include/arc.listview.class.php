@@ -226,19 +226,10 @@ class ListView
         $tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$this->TypeLink->TypeInfos['templist'];
         $tempfile = str_replace("{tid}", $this->TypeID, $tempfile);
         $tempfile = str_replace("{cid}", $this->ChannelUnit->ChannelInfos['nid'], $tempfile);
-        if ( defined('DEDEMOB') )
-        {
-            $tempfile =str_replace('.htm','_m.htm',$tempfile);
-        }
         if(!file_exists($tempfile))
         {
             $tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$GLOBALS['cfg_df_style']."/list_default.htm";
-            if ( defined('DEDEMOB') )
-            {
-                $tempfile =str_replace('.htm','_m.htm',$tempfile);
-            }
         }
-        
         if(!file_exists($tempfile)||!is_file($tempfile))
         {
             echo "模板文件不存在，无法解析文档！";
@@ -400,17 +391,9 @@ class ListView
             $tempfile = str_replace("{tid}",$this->TypeID,$this->Fields['tempindex']);
             $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
             $tempfile = $tmpdir."/".$tempfile;
-            if ( defined('DEDEMOB') )
-            {
-                $tempfile =str_replace('.htm','_m.htm',$tempfile);
-            }
             if(!file_exists($tempfile))
             {
                 $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_default.htm";
-                if ( defined('DEDEMOB') )
-                {
-                    $tempfile =str_replace('.htm','_m.htm',$tempfile);
-                }
             }
             $this->dtp->LoadTemplate($tempfile);
         }
@@ -436,17 +419,9 @@ class ListView
             $tempfile = str_replace("{tid}",$this->TypeID,$this->Fields['tempindex']);
             $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
             $tempfile = $tmpdir."/".$tempfile;
-            if ( defined('DEDEMOB') )
-            {
-                $tempfile =str_replace('.htm','_m.htm',$tempfile);
-            }
             if(!file_exists($tempfile))
             {
                 $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_default.htm";
-                if ( defined('DEDEMOB') )
-                {
-                    $tempfile =str_replace('.htm','_m.htm',$tempfile);
-                }
             }
             $this->PartView->SetTemplet($tempfile);
         }
@@ -514,17 +489,9 @@ class ListView
             $tempfile = str_replace("{tid}",$this->TypeID,$this->Fields['tempindex']);
             $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
             $tempfile = $tmpdir."/".$tempfile;
-            if ( defined('DEDEMOB') )
-            {
-                $tempfile =str_replace('.htm','_m.htm',$tempfile);
-            }
             if(!file_exists($tempfile))
             {
                 $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_default.htm";
-                if ( defined('DEDEMOB') )
-                {
-                    $tempfile =str_replace('.htm','_m.htm',$tempfile);
-                }
             }
             $this->PartView->SetTemplet($tempfile);
         }

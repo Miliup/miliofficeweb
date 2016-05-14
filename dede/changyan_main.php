@@ -78,7 +78,7 @@ if($dopost=='reg')
 <table width="98%" border="0" cellspacing="1" cellpadding="1">
   <tbody>
     <tr>
-      <td height="30" colspan="2" style="color:#999"><strong><a href="http://changyan.kuaizhan.com/?fromdedecms" target="_blank" style="color:blue">畅言</a></strong>是一个简单而强大的社会化评论及聚合平台。用户可以直接用自己的社会化网络账户在第三方网站发表评论，并且一键评论同步至社交网络将网站内容和自己的评论分享给好友。增加第三方网站用户活跃度，调动好友参与评论，帮助网站实现社会化网络优化，有效提升网站社会化流量！</td>
+      <td height="30" colspan="2" style="color:#999"><strong><a href="http://changyan.sohu.com/?fromdedecms" target="_blank" style="color:blue">畅言</a></strong>是一个简单而强大的社会化评论及聚合平台。用户可以直接用自己的社会化网络账户在第三方网站发表评论，并且一键评论同步至社交网络将网站内容和自己的评论分享给好友。增加第三方网站用户活跃度，调动好友参与评论，帮助网站实现社会化网络优化，有效提升网站社会化流量！</td>
     </tr>
     <tr>
       <td height="30" colspan="2" style="color:#999"></td>
@@ -244,7 +244,7 @@ EOT;
         if($type=='reg')
         {
             $errorInfo='';
-            if(changyan_bind_account($user, $pwd, $errorInfo))
+            if(changyan_bind_account($user, $pwd, &$errorInfo))
             {
                 ShowMsg("绑定成功，下面进行账号切换……！","?dopost=quick_login&nocheck=yes");
                 exit();
@@ -347,7 +347,7 @@ function CheckSubmit(){
       <td colspan='2'  height='100'><table width="98%" border="0" cellspacing="1" cellpadding="1">
           <tbody>
             <tr>
-              <td height="30" colspan="2" style="color:#999"><strong><a href="http://changyan.kuaizhan.com/?fromdedecms" target="_blank" style="color:blue">畅言</a></strong>是一个简单而强大的社会化评论及聚合平台。用户可以直接用自己的社会化网络账户在第三方网站发表评论，并且一键评论同步至社交网络将网站内容和自己的评论分享给好友。增加第三方网站用户活跃度，调动好友参与评论，帮助网站实现社会化网络优化，有效提升网站社会化流量！</td>
+              <td height="30" colspan="2" style="color:#999"><strong><a href="http://changyan.sohu.com/?fromdedecms" target="_blank" style="color:blue">畅言</a></strong>是一个简单而强大的社会化评论及聚合平台。用户可以直接用自己的社会化网络账户在第三方网站发表评论，并且一键评论同步至社交网络将网站内容和自己的评论分享给好友。增加第三方网站用户活跃度，调动好友参与评论，帮助网站实现社会化网络优化，有效提升网站社会化流量！</td>
             </tr>
             <tr>
               <td height="30" colspan="2" style="color:#999"></td>
@@ -521,7 +521,7 @@ EOT;
     $user=changyan_get_setting('user');
     $sign=changyan_gen_sign($user);
     $result = changyan_getcode(CHANGYAN_CLIENT_ID, $user, false, $sign);
-    $code = dede_htmlspecialchars($result['code']);
+    $code = htmlspecialchars($result['code']);
     $msg = <<<EOT
 <style type='text/css'>
 pre {
@@ -638,7 +638,7 @@ function CheckSubmit(){
       <td colspan='2'  height='100'><table width="98%" border="0" cellspacing="1" cellpadding="1">
   <tbody>
     <tr>
-      <td height="30" colspan="2" style="color:#999"><strong><a href="http://changyan.kuaizhan.com/?fromdedecms" target="_blank" style="color:blue">畅言</a></strong>是一个简单而强大的社会化评论及聚合平台。用户可以直接用自己的社会化网络账户在第三方网站发表评论，并且一键评论同步至社交网络将网站内容和自己的评论分享给好友。增加第三方网站用户活跃度，调动好友参与评论，帮助网站实现社会化网络优化，有效提升网站社会化流量！</td>
+      <td height="30" colspan="2" style="color:#999"><strong><a href="http://changyan.sohu.com/?fromdedecms" target="_blank" style="color:blue">畅言</a></strong>是一个简单而强大的社会化评论及聚合平台。用户可以直接用自己的社会化网络账户在第三方网站发表评论，并且一键评论同步至社交网络将网站内容和自己的评论分享给好友。增加第三方网站用户活跃度，调动好友参与评论，帮助网站实现社会化网络优化，有效提升网站社会化流量！</td>
     </tr>
     <tr>
       <td height="30" colspan="2" style="color:#999"></td>
@@ -690,17 +690,17 @@ OR $dopost=="import")
     elseif($dopost=='stat') $type='stat';
     $ptitle = '畅言评论管理';
 
-    $manage_url="http://changyan.kuaizhan.com/audit/comments/TOAUDIT/1";
+    $manage_url="http://changyan.sohu.com/audit/comments/TOAUDIT/1";
     $addstr='';
     if($dopost=='setting') 
     {
         $ptitle = "畅言设置";
-        $manage_url="http://changyan.kuaizhan.com/setting/basic";
+        $manage_url="http://changyan.sohu.com/setting/basic";
         
     } elseif ($dopost=='stat')
     {
         $ptitle = "数据统计";
-        $manage_url="http://changyan.kuaizhan.com/stat-data/comment";
+        $manage_url="http://changyan.sohu.com/stat-data/comment";
     } elseif ($dopost=='import')
     {
         $ptitle = "畅言工具";
@@ -936,7 +936,7 @@ EOT;
         );
     }
     foreach ($exports as $export) {
-        changyan_insert_comments(changyan_get_comments(changyan_get_setting('appid'),$export['topic_id']),$export['aid'],$export['title']);
+        changyan_insert_comments(changyan_get_comments($export['topic_id']),$export['aid'],$export['title']);
     }
     changyan_set_setting('last_export', time());
     ShowMsg("成功备份畅言评论到DedeCMS系统！","?dopost=import");
@@ -1051,7 +1051,7 @@ EOT;
 } elseif ($dopost=='logout')
 {
     echo <<<EOT
-<iframe src="http://changyan.kuaizhan.com/logout" scrolling="no" width="0" height="0"></iframe>
+<iframe src="http://changyan.sohu.com/logout" scrolling="no" width="0" height="0"></iframe>
 EOT;
     $_SESSION['changyan'] = 0;
     $_SESSION['user'] = '';
@@ -1147,7 +1147,6 @@ EOT;
     exit;
 } else {
     $user = changyan_get_setting('user');
-    $changyan_ver = CHANGYAN_VER;
     if(empty($user)) $user='';
     $msg = <<<EOT
 <html>
@@ -1180,10 +1179,6 @@ function CheckSubmit(){
     <tr bgcolor='#FFFFFF'>
       <td colspan='2'  height='100'><table width="98%" border="0" cellspacing="1" cellpadding="1">
           <tbody>
-            <tr>
-              <td width="16%" height="30">版本：</td>
-              <td width="84%" style="text-align:left;"><span style='color:black'><iframe name='stafrm' src='http://changyan.api.dedecms.com/index.php?c=welcome&m=new_ver&ver={$changyan_ver}&siteurl={$siteurl2}&feedback_total={$feedback_total}' frameborder='0' id='stafrm' width='98%' height='22'></iframe></span></td>
-            </tr>
             <tr>
               <td width="16%" height="30">邮箱：</td>
               <td width="84%" style="text-align:left;"><input name="user" type="text" id="user" size="16" style="width:200px" value="{$user}" />
@@ -1231,9 +1226,6 @@ EOT;
         $isv_id = intval($isv_id);
         $changge_isv_url = CHANGYAN_API_CHANGE_ISV.$isv_id;
         $isv_app_key = changyan_get_isv_app_key();
-        $siteurl2 = urlencode($cfg_basehost);
-        $rowcount = $dsql->GetOne("SELECT COUNT(*) AS dd FROM `#@__feedback`");
-        $feedback_total = isset($rowcount['dd'])? $rowcount['dd'] : 0;
         $change_isv_id = <<<EOT
 <div id="change_isv"></div>
 <script type="text/javascript">
@@ -1263,7 +1255,7 @@ EOT;
     </tr>
     <tr>
       <td width="16%" height="30">畅言模块版本：</td>
-      <td width="84%" style="text-align:left;"><span style='color:black'><iframe name='stafrm' src='http://changyan.api.dedecms.com/index.php?c=welcome&m=new_ver&ver={$changyan_ver}&siteurl={$siteurl2}&feedback_total={$feedback_total}' frameborder='0' id='stafrm' width='98%' height='22'></iframe></span></td>
+      <td width="84%" style="text-align:left;">v{$changyan_ver} <a href='?dopost=checkupdate' style='color:blue'>[检查更新]</a> </td>
     </tr>
     <tr>
       <td width="16%" height="30">App ID：</td>

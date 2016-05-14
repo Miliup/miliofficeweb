@@ -1,503 +1,383 @@
 <?php
-include_once (dirname(__FILE__)."/../include/common.inc.php");
-define('IN_DISCUZ', FALSE);
 
-define('UC_CLIENT_VERSION', '1.5.0');	//note UCenter 版本标识
-define('UC_CLIENT_RELEASE', '20081031');
+/**
+ *      [Discuz!] (C)2001-2099 Comsenz Inc.
+ *      This is NOT a freeware, use is subject to license terms
+ *
+ *      $Id: uc.php 34214 2013-11-11 02:33:40Z hypowang $
+ */
 
-define('API_DELETEUSER', 1);		//note 用户删除 API 接口开关
-define('API_RENAMEUSER', 1);		//note 用户改名 API 接口开关
-define('API_GETTAG', 1);		//note 获取标签 API 接口开关
-define('API_SYNLOGIN', 1);		//note 同步登录 API 接口开关
-define('API_SYNLOGOUT', 1);		//note 同步登出 API 接口开关
-define('API_UPDATEPW', 1);		//note 更改用户密码 开关
-define('API_UPDATEBADWORDS', 1);	//note 更新关键字列表 开关
-define('API_UPDATEHOSTS', 1);		//note 更新域名解析缓存 开关
-define('API_UPDATEAPPS', 1);		//note 更新应用列表 开关
-define('API_UPDATECLIENT', 1);		//note 更新客户端缓存 开关
-define('API_UPDATECREDIT', 1);		//note 更新用户积分 开关
-define('API_GETCREDITSETTINGS', 1);	//note 向 UCenter 提供积分设置 开关
-define('API_GETCREDIT', 1);		//note 获取用户的某项积分 开关
-define('API_UPDATECREDITSETTINGS', 1);	//note 更新应用积分设置 开关
+error_reporting(0);
 
+define('UC_CLIENT_VERSION', '1.6.0');
+define('UC_CLIENT_RELEASE', '20110501');
+
+define('API_DELETEUSER', 1);
+define('API_RENAMEUSER', 1);
+define('API_GETTAG', 1);
+define('API_SYNLOGIN', 1);
+define('API_SYNLOGOUT', 1);
+define('API_UPDATEPW', 1);
+define('API_UPDATEBADWORDS', 1);
+define('API_UPDATEHOSTS', 1);
+define('API_UPDATEAPPS', 1);
+define('API_UPDATECLIENT', 1);
+define('API_UPDATECREDIT', 1);
+define('API_GETCREDIT', 1);
+define('API_GETCREDITSETTINGS', 1);
+define('API_UPDATECREDITSETTINGS', 1);
+define('API_ADDFEED', 1);
 define('API_RETURN_SUCCEED', '1');
 define('API_RETURN_FAILED', '-1');
-define('API_RETURN_FORBIDDEN', '-2');
+define('API_RETURN_FORBIDDEN', '1');
 
-define('UC_CLIENT_ROOT', DEDEROOT.'/uc_client');
+define('IN_API', true);
+define('CURSCRIPT', 'api');
 
-//note 普通的 http 通知方式
-if(!defined('IN_UC'))
-{
 
-	error_reporting(0);
-	@set_magic_quotes_runtime(0);
-	defined('MAGIC_QUOTES_GPC') || define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
+if(!defined('IN_UC')) {
+	require_once '../source/class/class_core.php';
 
-	$_DCACHE = $get = $post = array();
+	$discuz = C::app();
+	$discuz->init();
+
+	require DISCUZ_ROOT.'./config/config_ucenter.php';
+
+	$get = $post = array();
 
 	$code = @$_GET['code'];
+	parse_str(authcode($code, 'DECODE', UC_KEY), $get);
 
-	parse_str(_authcode($code, 'DECODE', UC_KEY), $get);
-	
-	if(MAGIC_QUOTES_GPC)
-	{
-		$get = _stripslashes($get);
-	}
-
-	$timestamp = time();
-	if($timestamp - $get['time'] > 3600) {
+	if(time() - $get['time'] > 3600) {
 		exit('Authracation has expiried');
 	}
 	if(empty($get)) {
 		exit('Invalid Request');
 	}
-	$action = $get['action'];
 
-	require_once UC_CLIENT_ROOT.'/lib/xml.class.php';
+	include_once DISCUZ_ROOT.'./uc_client/lib/xml.class.php';
 	$post = xml_unserialize(file_get_contents('php://input'));
 
-	if(in_array($get['action'], array('test', 'DELETE user', 'renameuser', 'gettag', 'synlogin', 'synlogout', 'updatepw', 'updatebadwords', 'updatehosts', 'updateapps', 'updateclient', 'updatecredit', 'getcreditsettings', 'updatecreditsettings')))
-	{
+	if(in_array($get['action'], array('test', 'deleteuser', 'renameuser', 'gettag', 'synlogin', 'synlogout', 'updatepw', 'updatebadwords', 'updatehosts', 'updateapps', 'updateclient', 'updatecredit', 'getcredit', 'getcreditsettings', 'updatecreditsettings', 'addfeed'))) {
 		$uc_note = new uc_note();
-		exit($uc_note->$get['action']($get, $post));
-	}else{
+		echo $uc_note->$get['action']($get, $post);
+		exit();
+	} else {
 		exit(API_RETURN_FAILED);
 	}
-
-//note include 通知方式
 } else {
-
-	exit('Invalid Request');
+	exit;
 }
 
-class uc_note
-{
+class uc_note {
 
 	var $dbconfig = '';
 	var $db = '';
+	var $tablepre = '';
 	var $appdir = '';
-	var $tablepre = 'dede_';
-	
-	function _serialize($arr, $htmlon = 0)
-	{
-		if(!function_exists('xml_serialize'))
-		{
-			include_once UC_CLIENT_ROOT.'/lib/xml.class.php';
+
+	function _serialize($arr, $htmlon = 0) {
+		if(!function_exists('xml_serialize')) {
+			include_once DISCUZ_ROOT.'./uc_client/lib/xml.class.php';
 		}
 		return xml_serialize($arr, $htmlon);
 	}
 
-	function uc_note()
-	{
-		$this->appdir = DEDEROOT;
-		$this->dbconfig = DEDEINC.'/common.inc.php';
-		$this->db = $GLOBALS['dsql'];
-		$this->tablepre = $GLOBALS['cfg_dbprefix'];
-	}
-	
-	function get_uids($uids)
-	{
-		include UC_CLIENT_ROOT.'/client.php';
-		
-		$members = explode(",", $uids);
-		empty($members) && exit(API_RETURN_FORBIDDEN);
-		
-		$members_username = array();
-		
-		foreach($members as $id)
-		{
-			$row = uc_get_user($id,1);
-			$members_username[] =  $row[1];		
-		}
-		
-		$comma_temps = implode(",", $members_username);
-		
-		empty($comma_temps) && exit(API_RETURN_FORBIDDEN);
-		
-		$comma_uids = array();
-		
-		$row = $this->db->SetQuery("SELECT mid FROM `#@__member` WHERE userid IN ($comma_temps)");
-		$this->db->Execute();
-		while($row = $this->db->GetArray())
-		{
-			$comma_uids[] = $row['mid'];
-		}
-		
-		empty($comma_uids) && exit(API_RETURN_FORBIDDEN);
-		
-		return implode(",", $comma_uids);
+	function uc_note() {
+
 	}
 
-	function test($get, $post)
-	{
+	function test($get, $post) {
 		return API_RETURN_SUCCEED;
 	}
 
-	function deleteuser($get, $post)
-	{
-		$uids = $this->get_uids($get['ids']);
-		!API_DELETEUSER && exit(API_RETURN_FORBIDDEN);
-
-		//note 用户删除 API 接口
-		$rs = $this->db->ExecuteNoneQuery2("DELETE FROM `#@__member` WHERE mid IN ($uids) AND matt<>10 limit 1");
-		if($rs > 0)
-		{
-			$this->db->ExecuteNoneQuery("DELETE FROM `#@__member_tj` WHERE mid IN ($uids) limit 1");
-			$this->db->ExecuteNoneQuery("DELETE FROM `#@__member_space` WHERE mid IN ($uids) limit 1");
-			$this->db->ExecuteNoneQuery("DELETE FROM `#@__member_company` WHERE mid IN ($uids) limit 1");
-			$this->db->ExecuteNoneQuery("DELETE FROM `#@__member_person` WHERE mid IN ($uids) limit 1");
-		
-			//删除用户相关数据
-			$this->db->ExecuteNoneQuery("DELETE FROM `#@__member_stow` WHERE mid IN ($uids) ");
-			$this->db->ExecuteNoneQuery("DELETE FROM `#@__member_flink` WHERE mid IN ($uids) ");
-			$this->db->ExecuteNoneQuery("DELETE FROM `#@__member_guestbook` WHERE mid IN ($uids) ");
-			$this->db->ExecuteNoneQuery("DELETE FROM `#@__member_operation` WHERE mid IN ($uids) ");
-			$this->db->ExecuteNoneQuery("DELETE FROM `#@__member_pms` WHERE toid IN ($uids) OR fromid IN ($uids) ");
-			$this->db->ExecuteNoneQuery("DELETE FROM `#@__member_friends` WHERE mid IN ($uids) OR fid IN ($uids) ");
-			$this->db->ExecuteNoneQuery("DELETE FROM `#@__member_vhistory` WHERE mid IN ($uids) OR vid IN ($uids) ");
-			$this->db->ExecuteNoneQuery("DELETE FROM `#@__feedback` WHERE mid IN ($uids) ");
-			$this->db->ExecuteNoneQuery("UPDATE `#@__archives` SET mid='0' WHERE mid IN ($uids)");
-		}
-		else
-		{
-			exit(API_RETURN_FORBIDDEN);
-		}
-
-		return API_RETURN_SUCCEED;
-	}
-
-	function renameuser($get, $post)
-	{
-		$uids = $this->get_uids($get['ids']);
-		
-		
-		$usernameold = $get['oldusername'];
-		$usernamenew = $get['newusername'];
-		if(!API_RENAMEUSER)
-		{
+	function deleteuser($get, $post) {
+		global $_G;
+		if(!API_DELETEUSER) {
 			return API_RETURN_FORBIDDEN;
 		}
-
-		//note 获取标签 API 接口
-		$rs = $this->db->ExecuteNoneQuery2("UPDATE `#@__member` SET userid='$usernamenew' WHERE userid='$usernamenew' AND matt<>10 limit 1");
-		if($rs > 0)
-		{
-			$this->db->ExecuteNoneQuery("UPDATE `#@__archives` SET writer='$usernamenew' WHERE writer='$usernamenew'");
-			$this->db->ExecuteNoneQuery("UPDATE `#@__member_pms` SET floginid=REPLACE(floginid, '\t$usernameold', '\t$usernamenew'),tologinid=REPLACE(tologinid, '\t$usernameold', '\t$usernamenew')");
-			
-			
-			$row = $this->db->GetOne("SHOW TABLE STATUS");
-			$db_tables = $row['Name']; unset($row);
-			
-			if(in_array($this->tablepre.'guestbook',$db_tables))
-			{
-				$this->db->ExecuteNoneQuery("UPDATE `#@__guestbook` SET uname='$usernamenew' WHERE uname='$usernamenew'");
-			}
-			
-			if(in_array($this->tablepre.'story_books',$db_tables))
-			{
-				$this->db->ExecuteNoneQuery("UPDATE `#@__story_books` SET author='$usernamenew' WHERE author='$usernamenew'");
-			}
-			
-			if(in_array($this->tablepre.'groups',$db_tables))
-			{
-				$this->db->ExecuteNoneQuery("UPDATE `#@__groups` SET creater='$usernamenew' WHERE creater='$usernamenew'");
-				$this->db->ExecuteNoneQuery("UPDATE `#@__group_threads` SET author='$usernamenew' WHERE author='$usernamenew'");
-				$this->db->ExecuteNoneQuery("UPDATE `#@__group_user` SET username='$usernamenew' WHERE username='$usernamenew'");
-				$this->db->ExecuteNoneQuery("UPDATE `#@__group_posts` SET author='$usernamenew' WHERE author='$usernamenew'");
-				$this->db->ExecuteNoneQuery("UPDATE `#@__group_guestbook` SET uname='$usernamenew' WHERE uname='$usernamenew'");
-				$this->db->ExecuteNoneQuery("UPDATE `#@__groups` SET ismaster=REPLACE(ismaster, '\t$usernameold', '\t$usernamenew')");
-			}
-			
-			return API_RETURN_SUCCEED;
-		}
-		else
-		{
-			return API_RETURN_FORBIDDEN;
-		}
-	}
-
-	function gettag($get, $post)
-	{
-		$name = $get['id'];
-		if(!API_GETTAG)
-		{
-			return API_RETURN_FORBIDDEN;
-		}
-
-		//note 获取标签 API 接口
-
-		$name = trim($name);
-		if(empty($name) || !preg_match('/^([\x7f-\xff_-]|\w|\s)+$/', $name) || strlen($name) > 20)
-		{
-			return API_RETURN_FAILED;
-		}
-
-		$row = $this->db->GetOne("SELECT `total`,`id` FROM `#@__tagindex` WHERE `tag`='$name'");
-		if(!is_array($row))
-		{
-			return API_RETURN_FAILED;
-		}
-		
-		$tpp = $row['total'] > 10 ? 10 : $row['total'];		
-		
+		$uids = str_replace("'", '', stripslashes($get['ids']));
 		$ids = array();
-		
-		$this->db->SetQuery("SELECT aid FROM `#@__taglist` WHERE `tid`='$row[id]' AND arcrank>-1");
-		$this->db->Execute();
-		while($row = $this->db->GetArray())
-		{
-			$ids[] = $row['aid'];			
-		}
-		
-		if(empty($ids))
-		{
-			return API_RETURN_FAILED;
-		}
-		
-		$aids = implode(",", $ids);
-		
-		include_once DEDEINC.'/channelunit.func.php';
-		
-		$archives_list = array();		
-		$this->db->SetQuery("SELECT arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath 
-	FROM `#@__archives` arc LEFT JOIN `#@__arctype` tp ON arc.typeid=tp.id WHERE arc.id IN($aids) ORDER BY id DESC LIMIT $tpp");
-		$this->db->Execute();
-		while($row = $this->db->GetArray())
-		{
-			$row['url'] = GetFileUrl($row['id'],$row['typeid'],$row['senddate'],$row['title'],$row['ismake'],$row['arcrank'],$row['namerule'],$row['typedir'],$row['money'],$row['filename'],$row['moresite'],$row['siteurl'],$row['sitepath']);
+		$ids = array_keys(C::t('common_member')->fetch_all($uids));
+		require_once DISCUZ_ROOT.'./source/function/function_delete.php';
+		$ids && deletemember($ids);
 
-			$row['url'] = !preg_match('#http:#i',$row['url']) ? $GLOBALS['cfg_basehost'].$row['url'] : $row['url'];
-			
-			if(!empty($row['url']))
-			{
-				$archives_list[] = array('title' => $row['title'],'writer' => $row['writer'],'pubdate' => $row['pubdate'],'url' => $row['url']);
-			}
-		}
-
-		$return = array($name, $archives_list);
-		return $this->_serialize($return, 1);
-	}
-
-	function synlogin($get, $post)
-	{
-		$uid = $get['uid'];
-		$username = $get['username'];
-		if(!API_SYNLOGIN)
-		{
-			return API_RETURN_FORBIDDEN;
-		}
-
-		//note 同步登录 API 接口
-		header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"');
-		$result = $this->db->GetOne("SELECT mid,pwd FROM `#@__member` WHERE `userid` like '$username' AND matt<>10");
-		if(is_array($result))
-		{
-			include_once DEDEINC.'/memberlogin.class.php';
-			$cfg_ml = new MemberLogin(86400);
-			$cfg_ml->PutLoginInfo($result['mid']);
-		}
-	}
-
-	function synlogout($get, $post)
-	{
-		if(!API_SYNLOGOUT)
-		{
-			return API_RETURN_FORBIDDEN;
-		}
-
-		//note 同步登出 API 接口
-		header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"');
-		include_once DEDEINC.'/memberlogin.class.php';
-		$cfg_ml = new MemberLogin();
-		$cfg_ml->ExitCookie();
-	}
-
-	function updatepw($get, $post)
-	{
-		if(!API_UPDATEPW)
-		{
-			return API_RETURN_FORBIDDEN;
-		}
-		$username = $get['username'];
-		$password = $get['password'];
-		
-		//note 修改密码 API 接口
-		$newpw = md5($password);
-		$this->db->ExecuteNoneQuery("UPDATE `#@__member` SET `pwd`='$newpw' WHERE `userid`='$username'");
 		return API_RETURN_SUCCEED;
 	}
 
-	function updatebadwords($get, $post)
-	{
-		if(!API_UPDATEBADWORDS)
-		{
+	function renameuser($get, $post) {
+		global $_G;
+
+		if(!API_RENAMEUSER) {
 			return API_RETURN_FORBIDDEN;
 		}
 
-		$row = $this->db->GetOne("SELECT `value` FROM `#@__sysconfig` WHERE `varname`='cfg_replacestr'");
-		
-		$badwords = isset($row['value']) ? explode(",", $row['value']) : array();
-		
-		if(is_array($post))
-		{
-			foreach($post as $k => $v)
-			{
-				if(in_array($v['find'],$badwords)) continue;
-				$badwords[] = $v['find'];
+
+
+		$tables = array(
+			'common_block' => array('id' => 'uid', 'name' => 'username'),
+			'common_invite' => array('id' => 'fuid', 'name' => 'fusername'),
+			'common_member_verify_info' => array('id' => 'uid', 'name' => 'username'),
+			'common_mytask' => array('id' => 'uid', 'name' => 'username'),
+			'common_report' => array('id' => 'uid', 'name' => 'username'),
+
+			'forum_thread' => array('id' => 'authorid', 'name' => 'author'),
+			'forum_activityapply' => array('id' => 'uid', 'name' => 'username'),
+			'forum_groupuser' => array('id' => 'uid', 'name' => 'username'),
+			'forum_pollvoter' => array('id' => 'uid', 'name' => 'username'),
+			'forum_post' => array('id' => 'authorid', 'name' => 'author'),
+			'forum_postcomment' => array('id' => 'authorid', 'name' => 'author'),
+			'forum_ratelog' => array('id' => 'uid', 'name' => 'username'),
+
+			'home_album' => array('id' => 'uid', 'name' => 'username'),
+			'home_blog' => array('id' => 'uid', 'name' => 'username'),
+			'home_clickuser' => array('id' => 'uid', 'name' => 'username'),
+			'home_docomment' => array('id' => 'uid', 'name' => 'username'),
+			'home_doing' => array('id' => 'uid', 'name' => 'username'),
+			'home_feed' => array('id' => 'uid', 'name' => 'username'),
+			'home_feed_app' => array('id' => 'uid', 'name' => 'username'),
+			'home_friend' => array('id' => 'fuid', 'name' => 'fusername'),
+			'home_friend_request' => array('id' => 'fuid', 'name' => 'fusername'),
+			'home_notification' => array('id' => 'authorid', 'name' => 'author'),
+			'home_pic' => array('id' => 'uid', 'name' => 'username'),
+			'home_poke' => array('id' => 'fromuid', 'name' => 'fromusername'),
+			'home_share' => array('id' => 'uid', 'name' => 'username'),
+			'home_show' => array('id' => 'uid', 'name' => 'username'),
+			'home_specialuser' => array('id' => 'uid', 'name' => 'username'),
+			'home_visitor' => array('id' => 'vuid', 'name' => 'vusername'),
+
+			'portal_article_title' => array('id' => 'uid', 'name' => 'username'),
+			'portal_comment' => array('id' => 'uid', 'name' => 'username'),
+			'portal_topic' => array('id' => 'uid', 'name' => 'username'),
+			'portal_topic_pic' => array('id' => 'uid', 'name' => 'username'),
+		);
+
+		if(!C::t('common_member')->update($get['uid'], array('username' => $get[newusername])) && isset($_G['setting']['membersplit'])){
+			C::t('common_member_archive')->update($get['uid'], array('username' => $get[newusername]));
+		}
+
+		loadcache("posttableids");
+		if($_G['cache']['posttableids']) {
+			foreach($_G['cache']['posttableids'] AS $tableid) {
+				$tables[getposttable($tableid)] = array('id' => 'authorid', 'name' => 'author');
 			}
 		}
 
-		$badwords_comma = !empty($badwords) ? implode(",", $badwords) : '';
-		
+		foreach($tables as $table => $conf) {
+			DB::query("UPDATE ".DB::table($table)." SET `$conf[name]`='$get[newusername]' WHERE `$conf[id]`='$get[uid]'");
+		}
+		return API_RETURN_SUCCEED;
+	}
 
-		$this->db->ExecuteNoneQuery("UPDATE `#@__sysconfig` SET `value`='$badwords_comma' WHERE `varname`='cfg_replacestr'");
-		
-		$cachefile = DEDEDATA.'/config.cache.inc.php';
-		
-		if(!is_writeable($cachefile))
-		{
+	function gettag($get, $post) {
+		global $_G;
+		if(!API_GETTAG) {
+			return API_RETURN_FORBIDDEN;
+		}
+		return $this->_serialize(array($get['id'], array()), 1);
+	}
+
+	function synlogin($get, $post) {
+		global $_G;
+
+		if(!API_SYNLOGIN) {
 			return API_RETURN_FORBIDDEN;
 		}
 
-		$fp = fopen($cachefile, 'w');
-		$this->db->SetQuery("SELECT `varname`,`type`,`value`,`groupid` From `#@__sysconfig` order by aid asc ");
-		$this->db->Execute();
-		$s = '<?php'."\r\n";
-		while($row = $this->db->GetArray())
-		{
-			$s .= '$'.$row['varname'].' = '.($row['type']=='number' ? $row['value'] : "'".str_replace("'",'',$row['value'])."'").";\r\n";
+		header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"');
+
+		$cookietime = 31536000;
+		$uid = intval($get['uid']);
+		if(($member = getuserbyuid($uid, 1))) {
+			dsetcookie('auth', authcode("$member[password]\t$member[uid]", 'ENCODE'), $cookietime);
 		}
-		$s .= '?>';
+	}
+
+	function synlogout($get, $post) {
+		global $_G;
+
+		if(!API_SYNLOGOUT) {
+			return API_RETURN_FORBIDDEN;
+		}
+
+		header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"');
+
+		dsetcookie('auth', '', -31536000);
+	}
+
+	function updatepw($get, $post) {
+		global $_G;
+
+		if(!API_UPDATEPW) {
+			return API_RETURN_FORBIDDEN;
+		}
+
+		$username = $get['username'];
+		$newpw = md5(time().rand(100000, 999999));
+		$uid = 0;
+		if(($uid = C::t('common_member')->fetch_uid_by_username($username))) {
+			$ext = '';
+		} elseif(($uid = C::t('common_member_archive')->fetch_uid_by_username($username))) {
+			$ext = '_archive';
+		}
+		if($uid) {
+			C::t('common_member'.$ext)->update($uid, array('password' => $newpw));
+		}
+
+		return API_RETURN_SUCCEED;
+	}
+
+	function updatebadwords($get, $post) {
+		global $_G;
+
+		if(!API_UPDATEBADWORDS) {
+			return API_RETURN_FORBIDDEN;
+		}
+
+		$data = array();
+		if(is_array($post)) {
+			foreach($post as $k => $v) {
+				$data['findpattern'][$k] = $v['findpattern'];
+				$data['replace'][$k] = $v['replacement'];
+			}
+		}
+		$cachefile = DISCUZ_ROOT.'./uc_client/data/cache/badwords.php';
+		$fp = fopen($cachefile, 'w');
+		$s = "<?php\r\n";
+		$s .= '$_CACHE[\'badwords\'] = '.var_export($data, TRUE).";\r\n";
 		fwrite($fp, $s);
 		fclose($fp);
+
 		return API_RETURN_SUCCEED;
 	}
 
-	function updatehosts($get, $post)
-	{
-		if(!API_UPDATEHOSTS)
-		{
+	function updatehosts($get, $post) {
+		global $_G;
+
+		if(!API_UPDATEHOSTS) {
 			return API_RETURN_FORBIDDEN;
 		}
-		//note 理新HOST缓存 API 接口
-		$cachefile = UC_CLIENT_ROOT.'/data/cache/hosts.php';
+
+		$cachefile = DISCUZ_ROOT.'./uc_client/data/cache/hosts.php';
 		$fp = fopen($cachefile, 'w');
 		$s = "<?php\r\n";
 		$s .= '$_CACHE[\'hosts\'] = '.var_export($post, TRUE).";\r\n";
 		fwrite($fp, $s);
 		fclose($fp);
+
 		return API_RETURN_SUCCEED;
 	}
 
-	function updateapps($get, $post)
-	{
-		if(!API_UPDATEAPPS)
-		{
+	function updateapps($get, $post) {
+		global $_G;
+
+		if(!API_UPDATEAPPS) {
 			return API_RETURN_FORBIDDEN;
 		}
-		$UC_API = $post['UC_API'];
 
-		//note 写 app 缓存文件
-		$cachefile = UC_CLIENT_ROOT.'/data/cache/apps.php';
+		$UC_API = '';
+		if($post['UC_API']) {
+			$UC_API = str_replace(array('\'', '"', '\\', "\0", "\n", "\r"), '', $post['UC_API']);
+			unset($post['UC_API']);
+		}
+
+		$cachefile = DISCUZ_ROOT.'./uc_client/data/cache/apps.php';
 		$fp = fopen($cachefile, 'w');
 		$s = "<?php\r\n";
 		$s .= '$_CACHE[\'apps\'] = '.var_export($post, TRUE).";\r\n";
 		fwrite($fp, $s);
 		fclose($fp);
 
+		if($UC_API && is_writeable(DISCUZ_ROOT.'./config/config_ucenter.php')) {
+			if(preg_match('/^https?:\/\//is', $UC_API)) {
+				$configfile = trim(file_get_contents(DISCUZ_ROOT.'./config/config_ucenter.php'));
+				$configfile = substr($configfile, -2) == '?>' ? substr($configfile, 0, -2) : $configfile;
+				$configfile = preg_replace("/define\('UC_API',\s*'.*?'\);/i", "define('UC_API', '".addslashes($UC_API)."');", $configfile);
+				if($fp = @fopen(DISCUZ_ROOT.'./config/config_ucenter.php', 'w')) {
+					@fwrite($fp, trim($configfile));
+					@fclose($fp);
+				}
+			}
+		}
 		return API_RETURN_SUCCEED;
 	}
 
-	function updateclient($get, $post)
-	{
-		if(!API_UPDATECLIENT)
-		{
+	function updateclient($get, $post) {
+		global $_G;
+
+		if(!API_UPDATECLIENT) {
 			return API_RETURN_FORBIDDEN;
 		}
-		$cachefile = UC_CLIENT_ROOT.'/data/cache/settings.php';
+
+		$cachefile = DISCUZ_ROOT.'./uc_client/data/cache/settings.php';
 		$fp = fopen($cachefile, 'w');
-		$s = '<?php'."\r\n";
+		$s = "<?php\r\n";
 		$s .= '$_CACHE[\'settings\'] = '.var_export($post, TRUE).";\r\n";
 		fwrite($fp, $s);
 		fclose($fp);
-		
+
 		return API_RETURN_SUCCEED;
 	}
 
-	function updatecredit($get, $post)
-	{
-		if(!API_UPDATECREDIT)
-		{
+	function updatecredit($get, $post) {
+		global $_G;
+
+		if(!API_UPDATECREDIT) {
 			return API_RETURN_FORBIDDEN;
 		}
-		/*
-		note 更新积分
-		discuz 默认8个积分表达,而DedeCMS只有一个积分字段,scores.注意money不能做积分来用.
-		extcredits1  extcredits2  extcredits3  extcredits4  extcredits5  extcredits6  extcredits7  extcredits8
-		*/
-				
-		$credit = intval($get['credit']);
-		$fileds = $credit > 1 ? 'money' : 'scores';
+
+		$credit = $get['credit'];
 		$amount = $get['amount'];
 		$uid = $get['uid'];
-		include UC_CLIENT_ROOT.'/client.php';
-		$data = uc_get_user($uid,1);
-		$username = $data[1];
-		
-		$result = $this->db->GetOne("SELECT mid FROM `#@__member` WHERE userid='$username'");
-		if(is_array($result))
-		{
-			$this->db->ExecuteNoneQuery("UPDATE `#@__member` SET `$fileds`=`$fileds`+'$amount' WHERE mid='$result[mid]'");
+		if(!getuserbyuid($uid)) {
+			return API_RETURN_SUCCEED;
 		}
-		
+
+		updatemembercount($uid, array($credit => $amount));
+		C::t('common_credit_log')->insert(array('uid' => $uid, 'operation' => 'ECU', 'relatedid' => $uid, 'dateline' => time(), 'extcredits'.$credit => $amount));
+
 		return API_RETURN_SUCCEED;
 	}
 
-	function getcredit($get, $post)
-	{
-		if(!API_GETCREDIT)
-		{
+	function getcredit($get, $post) {
+		global $_G;
+
+		if(!API_GETCREDIT) {
 			return API_RETURN_FORBIDDEN;
 		}
-		
-		include UC_CLIENT_ROOT.'/client.php';
-		$data = uc_get_user($uid,1);
-		$username = $data[1];
+		$uid = intval($get['uid']);
 		$credit = intval($get['credit']);
-		$fileds = $credit > 1 ? 'money' : 'scores';
-		$result = $this->db->GetOne("SELECT `$fileds` AS credit FROM `#@__member` WHERE userid='$username'");
-		
-		echo is_array($result) ? $result['credit'] : 0;		
+		$_G['uid'] = $_G['member']['uid'] = $uid;
+		return getuserprofile('extcredits'.$credit);
 	}
 
-	function getcreditsettings($get, $post)
-	{
-		if(!API_GETCREDITSETTINGS)
-		{
+	function getcreditsettings($get, $post) {
+		global $_G;
+
+		if(!API_GETCREDITSETTINGS) {
 			return API_RETURN_FORBIDDEN;
 		}
-		
-		//这里支持DedeCMS积分,金币设置
-		$credits[1] = array(strip_tags('积分'), '分');
-		$credits[2] = array(strip_tags('金币'), '枚');
+
+		$credits = array();
+		foreach($_G['setting']['extcredits'] as $id => $extcredits) {
+			$credits[$id] = array(strip_tags($extcredits['title']), $extcredits['unit']);
+		}
+
 		return $this->_serialize($credits);
 	}
 
-	function updatecreditsettings($get, $post)
-	{
-		if(!API_UPDATECREDITSETTINGS)
-		{
+	function updatecreditsettings($get, $post) {
+		global $_G;
+
+		if(!API_UPDATECREDITSETTINGS) {
 			return API_RETURN_FORBIDDEN;
 		}
-		$credit = $get['credit'];
+
 		$outextcredits = array();
-		if($credit && is_array($credit)) {
-			foreach($credit as $appid => $credititems) {
+		foreach($get['credit'] as $appid => $credititems) {
+			if($appid == UC_APPID) {
 				foreach($credititems as $value) {
-					if($value['appiddesc']!=UC_APPID) continue;
-					$outextcredits[$appid][] = array(
+					$outextcredits[$value['appiddesc'].'|'.$value['creditdesc']] = array(
 						'appiddesc' => $value['appiddesc'],
 						'creditdesc' => $value['creditdesc'],
 						'creditsrc' => $value['creditsrc'],
@@ -510,74 +390,34 @@ class uc_note
 				}
 			}
 		}
-		$_CACHE = "<?php !defined('UC_API') && exit(\"403 Forbidden!\");\n".'$_CACHE[\'credit\'] = unserialize("'.addslashes(serialize($outextcredits)).'");'."\r\n".'?>';
-		$fp = @fopen(DEDEDATA.'/credits.inc.php', 'w');
-		@fwrite($fp, $_CACHE);
-		@fclose($fp);
+		$tmp = array();
+		foreach($outextcredits as $value) {
+			$key = $value['appiddesc'].'|'.$value['creditdesc'];
+			if(!isset($tmp[$key])) {
+				$tmp[$key] = array('title' => $value['title'], 'unit' => $value['unit']);
+			}
+			$tmp[$key]['ratiosrc'][$value['creditsrc']] = $value['ratiosrc'];
+			$tmp[$key]['ratiodesc'][$value['creditsrc']] = $value['ratiodesc'];
+			$tmp[$key]['creditsrc'][$value['creditsrc']] = $value['ratio'];
+		}
+		$outextcredits = $tmp;
+
+		$cachefile = DISCUZ_ROOT.'./uc_client/data/cache/creditsettings.php';
+		$fp = fopen($cachefile, 'w');
+		$s = "<?php\r\n";
+		$s .= '$_CACHE[\'creditsettings\'] = '.var_export($outextcredits, TRUE).";\r\n";
+		fwrite($fp, $s);
+		fclose($fp);
+
+		return API_RETURN_SUCCEED;
+	}
+
+	function addfeed($get, $post) {
+		global $_G;
+
+		if(!API_ADDFEED) {
+			return API_RETURN_FORBIDDEN;
+		}
 		return API_RETURN_SUCCEED;
 	}
 }
-
-
-function _authcode($string, $operation = 'DECODE', $key = '', $expiry = 0) {
-	$ckey_length = 4;
-
-	$key = md5($key ? $key : UC_KEY);
-	$keya = md5(substr($key, 0, 16));
-	$keyb = md5(substr($key, 16, 16));
-	$keyc = $ckey_length ? ($operation == 'DECODE' ? substr($string, 0, $ckey_length): substr(md5(microtime()), -$ckey_length)) : '';
-
-	$cryptkey = $keya.md5($keya.$keyc);
-	$key_length = strlen($cryptkey);
-
-	$string = $operation == 'DECODE' ? base64_decode(substr($string, $ckey_length)) : sprintf('%010d', $expiry ? $expiry + time() : 0).substr(md5($string.$keyb), 0, 16).$string;
-	$string_length = strlen($string);
-
-	$result = '';
-	$box = range(0, 255);
-
-	$rndkey = array();
-	for($i = 0; $i <= 255; $i++) {
-		$rndkey[$i] = ord($cryptkey[$i % $key_length]);
-	}
-
-	for($j = $i = 0; $i < 256; $i++) {
-		$j = ($j + $box[$i] + $rndkey[$i]) % 256;
-		$tmp = $box[$i];
-		$box[$i] = $box[$j];
-		$box[$j] = $tmp;
-	}
-
-	for($a = $j = $i = 0; $i < $string_length; $i++) {
-		$a = ($a + 1) % 256;
-		$j = ($j + $box[$a]) % 256;
-		$tmp = $box[$a];
-		$box[$a] = $box[$j];
-		$box[$j] = $tmp;
-		$result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
-	}
-
-	if($operation == 'DECODE') {
-		if((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26).$keyb), 0, 16)) {
-			return substr($result, 26);
-		} else {
-				return '';
-			}
-	} else {
-		return $keyc.str_replace('=', '', base64_encode($result));
-	}
-
-}
-
-function _stripslashes($string) {
-	if(is_array($string)) {
-		foreach($string as $key => $val) {
-			$string[$key] = _stripslashes($val);
-		}
-	} else {
-		$string = stripslashes($string);
-	}
-	return $string;
-}
-
-?>

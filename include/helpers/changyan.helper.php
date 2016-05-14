@@ -1,32 +1,31 @@
 <?php if(!defined('DEDEINC')) exit('dedecms');
 
 define('CHANGYAN_API_AES', 'http://changyan.api.dedecms.com/');
-define('CHANGYAN_API_REG', 'http://changyan.kuaizhan.com/admin/api/open/reg');
-define('CHANGYAN_API_AUTOREG', 'http://changyan.kuaizhan.com/admin/api/open/auto-reg');
-define('CHANGYAN_API_LOGIN', 'http://changyan.kuaizhan.com/admin/api/open/validate');
-define('CHANGYAN_API_SETCOOKIE', 'http://changyan.kuaizhan.com/admin/api/open/set-cookie');
-define('CHANGYAN_API_ISNEW', 'http://changyan.kuaizhan.com/admin/api/recent-comment-topics');
-define('CHANGYAN_API_LATESTS', 'http://changyan.kuaizhan.com/api/2/comment/latests');
-define('CHANGYAN_API_RECENT', 'http://changyan.kuaizhan.com/admin/api/recent-comment-topics');
-define('CHANGYAN_API_CODE', 'http://changyan.kuaizhan.com/admin/api/open/get-code');
-define('CHANGYAN_API_ADDSITE', 'http://changyan.kuaizhan.com/admin/api/open/add-isv');
-define('CHANGYAN_API_CHANGE_ISV', 'http://changyan.kuaizhan.com/change-isv/');
-define('CHANGYAN_API_CHECK_LOGIN', 'http://changyan.kuaizhan.com/check-login');
-define('CHANGYAN_API_GETAPPKEY', 'http://changyan.kuaizhan.com/ admin/api/open/get-appkey');
+define('CHANGYAN_API_REG', 'http://changyan.sohu.com/admin/api/open/reg');
+define('CHANGYAN_API_AUTOREG', 'http://changyan.sohu.com/admin/api/open/auto-reg');
+define('CHANGYAN_API_LOGIN', 'http://changyan.sohu.com/admin/api/open/validate');
+define('CHANGYAN_API_SETCOOKIE', 'http://changyan.sohu.com/admin/api/open/set-cookie');
+define('CHANGYAN_API_ISNEW', 'http://changyan.sohu.com/admin/api/recent-comment-topics');
+define('CHANGYAN_API_LATESTS', 'http://changyan.sohu.com/api/2/comment/latests');
+define('CHANGYAN_API_RECENT', 'http://changyan.sohu.com/admin/api/recent-comment-topics');
+define('CHANGYAN_API_CODE', 'http://changyan.sohu.com/admin/api/open/get-code');
+define('CHANGYAN_API_ADDSITE', 'http://changyan.sohu.com/admin/api/open/add-isv');
+define('CHANGYAN_API_CHANGE_ISV', 'http://changyan.sohu.com/change-isv/');
+define('CHANGYAN_API_CHECK_LOGIN', 'http://changyan.sohu.com/check-login');
+define('CHANGYAN_API_GETAPPKEY', 'http://changyan.sohu.com/ admin/api/open/get-appkey');
 define('CHANGYAN_API_COMMENTS', 'http://changyan.sohu.com/api/2/topic/comments');
-define('CHANGYAN_API_TOPICCOMMENTS', 'http://changyan.sohu.com/api/2/topic/load');
-define('CHANGYAN_API_IMPORT', 'http://changyan.kuaizhan.com/admin/api/import/comment');
-define('CHANGYAN_API_GETISVS', 'http://changyan.kuaizhan.com/admin/api/open/get-isvs');
-define('CHANGYAN_API_GETISVS_JSONP', 'http://changyan.kuaizhan.com/admin/api/open/get-isvs-jsonp');
-define('CHANGYAN_API_BINDACC', 'http://changyan.kuaizhan.com/admin/api/open/mod-opinfo');
-define('CHANGYAN_API_FORGET_PWD', 'http://changyan.kuaizhan.com/platform/forget-pwd');
+define('CHANGYAN_API_IMPORT', 'http://changyan.sohu.com/admin/api/import/comment');
+define('CHANGYAN_API_GETISVS', 'http://changyan.sohu.com/admin/api/open/get-isvs');
+define('CHANGYAN_API_GETISVS_JSONP', 'http://changyan.sohu.com/admin/api/open/get-isvs-jsonp');
+define('CHANGYAN_API_BINDACC', 'http://changyan.sohu.com/admin/api/open/mod-opinfo');
+define('CHANGYAN_API_FORGET_PWD', 'http://changyan.sohu.com/platform/forget-pwd');
 
 define('CHANGYAN_CLIENT_ID', 'caqXYIe32');
 define('CHANGYAN_CLIENT_KEY', 'bcb585628b59584891ff5897be888c45');
 
 define('CHANGYAN_JQUERY_SRC', '<script>window.jQuery || document.write(unescape(\'%3Cscript src="http://changyan.api.dedecms.com/assets/js/jquery.min.js"%3E%3C/script%3E\'))</script>');
 
-define('CHANGYAN_VER', '0.0.11');
+define('CHANGYAN_VER', '0.0.10');
 
 $GLOBALS['update_sqls']=array(
     '0.0.2'=>array(
@@ -72,9 +71,6 @@ $GLOBALS['update_sqls']=array(
     ),
     '0.0.10'=>array(
         "UPDATE `#@__plus_changyan_setting` SET `svalue`='0.0.10' WHERE `skey`='version';",
-    ),
-    '0.0.11'=>array(
-        "UPDATE `#@__plus_changyan_setting` SET `svalue`='0.0.11' WHERE `skey`='version';",
     ),
 );
 
@@ -411,11 +407,12 @@ function changyan_get_isv_app_key()
     return $isv_app_key;
 }
 
-function changyan_get_comments($client_id, $topic_id)
+function changyan_get_comments($topic_id)
 {
+    global $client_id;
     $result=array();
     $paramsArr=array(
-        'client_id'=>$client_id, 
+        'client_id'=>CHANGYAN_CLIENT_ID, 
         'style'=>'floor', 
         'order_by'=>'time_asc', 
         'page_no'=>1, 
@@ -543,11 +540,6 @@ function changyan_getcode($client_id, $user, $is_mobile, $sign, $appid="")
     return json_decode(changyan_http_send($getcode_url),TRUE);
 }
 
-function changyan_get_topic_comments($client_id, $sid, $url)
-{
-    $get_topic_comments_url=CHANGYAN_API_TOPICCOMMENTS."/?client_id={$client_id}&topic_source_id={$sid}&topic_url={$url}";
-    return json_decode(changyan_http_send($get_topic_comments_url),TRUE);
-}
 function changyan_islogin()
 {
     return empty($_SESSION['changyan'])? FALSE : TRUE;

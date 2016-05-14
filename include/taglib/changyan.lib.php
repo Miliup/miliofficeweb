@@ -1,4 +1,4 @@
-﻿<?php   if(!defined('DEDEINC')) exit('Request Error!');
+<?php   if(!defined('DEDEINC')) exit('Request Error!');
 
 helper('changyan');
 helper('cache');
@@ -31,14 +31,9 @@ function lib_changyan(&$ctag,&$refObj)
             $user=changyan_get_setting('user');
             $sign=changyan_gen_sign($user);
             $result = changyan_getcode(CHANGYAN_CLIENT_ID, $user, false, $sign, $appid);
-            if ( $result['status'] == 1)
-            {
-                return '未获取畅言代码，错误消息：'.$result['msg'];
-            }
-            $row['reval'] = dede_htmlspecialchars($result['code']);
+            $row['reval'] = htmlspecialchars($result['code']);
             SetCache($prefix, $key, $row, 60*60*1);
         }
-        
         if(!empty($config))
         {
             $config_arr = array();

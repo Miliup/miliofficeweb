@@ -110,13 +110,7 @@ class TypeLink
     //islink 表示返回的列表是否带连接
     function GetPositionLink($islink=true)
     {
-        if ( defined('DEDEMOB') )
-        {
-            $indexpage = "<a href='index.php'>".$this->indexName."</a>";
-        } else{
-            $indexpage = "<a href='".$this->indexUrl."'>".$this->indexName."</a>";
-        }
-        
+        $indexpage = "<a href='".$this->indexUrl."'>".$this->indexName."</a>";
         if($this->valuePosition!="" && $islink)
         {
             return $this->valuePosition;
@@ -203,14 +197,8 @@ class TypeLink
     //获得某分类连接的URL
     function GetOneTypeUrl($typeinfos)
     {
-        if ( defined('DEDEMOB') )
-        {
-            return 'list.php?tid='.$typeinfos['id'];
-        } else {
-            return GetTypeUrl($typeinfos['id'],MfTypedir($typeinfos['typedir']),$typeinfos['isdefault'],$typeinfos['defaultname'],
+        return GetTypeUrl($typeinfos['id'],MfTypedir($typeinfos['typedir']),$typeinfos['isdefault'],$typeinfos['defaultname'],
         $typeinfos['ispart'],$typeinfos['namerule2'],$typeinfos['moresite'],$typeinfos['siteurl'],$typeinfos['sitepath']);
-        }
-            
     }
 
     //获得类别列表

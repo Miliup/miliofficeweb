@@ -30,17 +30,17 @@ if ( ! function_exists('HtmlReplace'))
 		$str = preg_replace("/<[\/]{0,1}style([^>]*)>(.*)<\/style>/i", '', $str);//2011-06-30 禁止会员投稿添加css样式 (by:织梦的鱼)
         if($rptype==0)
         {
-            $str = dede_htmlspecialchars($str);
+            $str = htmlspecialchars($str);
         }
         else if($rptype==1)
         {
-            $str = dede_htmlspecialchars($str);
+            $str = htmlspecialchars($str);
             $str = str_replace("　", ' ', $str);
             $str = preg_replace("/[\r\n\t ]{1,}/", ' ', $str);
         }
         else if($rptype==2)
         {
-            $str = dede_htmlspecialchars($str);
+            $str = htmlspecialchars($str);
             $str = str_replace("　", '', $str);
             $str = preg_replace("/[\r\n\t ]/", '', $str);
         }
@@ -118,7 +118,7 @@ if ( ! function_exists('TrimMsg'))
     function TrimMsg($msg)
     {
         $msg = trim(stripslashes($msg));
-        $msg = nl2br(dede_htmlspecialchars($msg));
+        $msg = nl2br(htmlspecialchars($msg));
         $msg = str_replace("  ","&nbsp;&nbsp;",$msg);
         return addslashes($msg);
     }

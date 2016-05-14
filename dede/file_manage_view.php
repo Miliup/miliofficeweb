@@ -113,7 +113,7 @@ else if($fmdo=="edit")
         $fp = fopen($file,"r");
         $content = fread($fp,filesize($file));
         fclose($fp);
-        $content = dede_htmlspecialchars($content);
+        $content = htmlspecialchars($content);
     }
     $contentView = "<textarea name='str' style='width:99%;height:450px;background:#ffffff;'>$content</textarea>\r\n";
     $GLOBALS['filename'] = $filename;

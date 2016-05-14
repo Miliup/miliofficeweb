@@ -695,9 +695,8 @@ else if($dopost=='quickEditSave')
             CheckArcAdmin($aid, $cuserLogin->getUserID());
         }
     }
-    $title = dede_htmlspecialchars(cn_substrR($title, $cfg_title_maxlen));
-    if(!empty($shorttitle)) $shorttitle = cn_substrR($shorttitle, 36);
-	else $shorttitle = cn_substrR($title, 36);
+    $title = htmlspecialchars(cn_substrR($title, $cfg_title_maxlen));
+    $shorttitle = cn_substrR($shorttitle, 36);
     $keywords = trim(cn_substrR($keywords, 60));
     if(!TestPurview('a_Check,a_AccCheck,a_MyCheck')) $arcrank = -1;
 

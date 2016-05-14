@@ -1,11 +1,11 @@
 <?php
-$cfg_basehost = 'http://www.miliup.com';
+$cfg_basehost = 'http://pf.yijachan.xyz';
 $cfg_cmspath = '';
-$cfg_cookie_encode = 'R7gH2hfcsrfxrqk2sKqK4bMpiwsqW';
+$cfg_cookie_encode = 'VwgRHiMWVl7pVWhSm6OlAlToNB46T';
 $cfg_indexurl = '/';
 $cfg_backup_dir = 'backupdata';
 $cfg_indexname = '主页';
-$cfg_webname = '米立设计';
+$cfg_webname = '我的网站';
 $cfg_adminemail = 'yingjiechen@live.cn';
 $cfg_html_editor = 'ckeditor';
 $cfg_arcdir = '/a';

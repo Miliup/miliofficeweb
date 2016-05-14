@@ -1,13 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
-<title>系统运行目录权限检测</title>
-<link rel="stylesheet" type="text/css" href="css/base.css" />
-<link rel="stylesheet" type="text/css" href="css/indexbody.css" />
-<script type="text/javascript" src="../include/js/jquery/jquery.js" ></script>
-</head>
-<body leftmargin="8" topmargin='8' bgcolor="#FFFFFF" style="min-width:840px">
 <?php
 @set_time_limit(0);
 /**
@@ -21,12 +11,23 @@
  */
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Edit');
-if(empty($action)) $action = '';
-
+$action = isset($action)? $action : '';
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $GLOBALS['cfg_soft_lang']; ?>">
+<title>系统运行目录权限检测</title>
+<link rel="stylesheet" type="text/css" href="css/base.css" />
+<link rel="stylesheet" type="text/css" href="css/indexbody.css" />
+<script type="text/javascript" src="../include/js/jquery/jquery.js" ></script>
+</head>
+<body leftmargin="8" topmargin='8' bgcolor="#FFFFFF" style="min-width:840px">
+<?php
 if(!function_exists('TestWriteable'))
 {
 	// 检测是否可写
-	function TestWriteable($d, $c=false)
+	function TestWriteable($d, $c=TRUE)
 	{
 		$tfile = '_write_able.txt';
 		$d = preg_replace("/\/$/", '', $d);

@@ -94,8 +94,7 @@ else if($dopost=='save')
     $ismake = $ishtml == 0 ? -1 : 0;
     $title = preg_replace("#\"#", '＂', $title);
     $title = cn_substrR($title,$cfg_title_maxlen);
-    if(!empty($shorttitle)) $shorttitle = cn_substrR($shorttitle, 36);
-	else $shorttitle = cn_substrR($title, 36);
+    $shorttitle = cn_substrR($shorttitle,36);
     $color =  cn_substrR($color,7);
     $writer =  cn_substrR($writer,20);
     $source = cn_substrR($source,30);
